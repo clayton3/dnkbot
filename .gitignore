@@ -1,0 +1,19 @@
+# Virtual environment
+venv/
+
+# Python cache files
+__pycache__/
+*.py[cod]
+*.sqlite3
+
+# Environment variables
+.env
+
+# Logs and temporary files
+*.log
+*.tmp
+
+# IDE/project-specific files
+.vscode/
+.DS_Store
+.env

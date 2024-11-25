@@ -1,17 +1,29 @@
 import openai
 
+# Initialize OpenAI API client
+openai.api_key = 'YOUR_OPENAI_API_KEY'
+
 def gpt_generate_signal(context):
+    """
+    Generate a trading signal using GPT-3 based on the provided context.
+
+    Parameters:
+    - context (str): Context information for GPT-3.
+
+    Returns:
+    - signal (str): Trading signal ('buy', 'sell', or 'hold').
+    """
     try:
-        response = openai.ChatCompletion.create(
-            model="gpt-4",
-            messages=[{"role": "user", "content": context}]
+        response = openai.Completion.create(
+            engine="davinci",
+            prompt=context,
+            max_tokens=5,
+            n=1,
+            stop=None,
+            temperature=0.5
         )
-        signal = response['choices'][0]['message']['content']
-        print(f"Usage: {response['usage']}")  # Monitor token usage
-        return signal.lower().strip()
-    except openai.error.RateLimitError:
-        print("Rate limit exceeded. Try again later.")
-        return "error"
+        signal = response.choices[0].text.strip().lower()
+        return signal
     except openai.error.OpenAIError as e:
-        print(f"OpenAI API Error: {e}")
-        return "error"
+        print(f"Error querying GPT: {e}")
+        return None
